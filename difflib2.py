@@ -1628,19 +1628,22 @@ _file_template = """
 </html>"""
 
 _styles = """
-        table.diff {font-family:Courier; border:medium;}
+        table.diff {font-family:Courier; border:medium; width: 100%; white-space: pre-wrap; table-layout:fixed;}
         .diff_header {background-color:#e0e0e0}
         td.diff_header {text-align:right}
         .diff_next {background-color:#c0c0c0}
         .diff_add {background-color:#aaffaa}
         .diff_chg {background-color:#ffff77}
-        .diff_sub {background-color:#ffaaaa}"""
+        .diff_sub {background-color:#ffaaaa}
+        colgroup.diff_header {width: 1%}
+        colgroup.diff_next {width: 3%}
+        colgroup.diff_text {width: 46%}"""
 
 _table_template = """
     <table class="diff" id="difflib_chg_%(prefix)s_top"
            cellspacing="0" cellpadding="0" rules="groups" >
-        <colgroup></colgroup> <colgroup></colgroup> <colgroup></colgroup>
-        <colgroup></colgroup> <colgroup></colgroup> <colgroup></colgroup>
+        <colgroup class="diff_header"></colgroup> <colgroup class="diff_next"></colgroup> <colgroup class="diff_text"></colgroup>
+        <colgroup class="diff_header"></colgroup> <colgroup class="diff_next"></colgroup> <colgroup class="diff_text"></colgroup>
         %(header_row)s
         <tbody>
 %(data_rows)s        </tbody>
@@ -1874,9 +1877,9 @@ class HtmlDiff(object):
         text=text.replace("&","&amp;").replace(">","&gt;").replace("<","&lt;")
 
         # make space non-breakable so they don't get compressed or line wrapped
-        text = text.replace(' ','&nbsp;').rstrip()
+        #text = text.replace(' ','&nbsp;').rstrip()
 
-        return '<td class="diff_header"%s>%s</td><td nowrap="nowrap">%s</td>' \
+        return '<td class="diff_header"%s>%s</td><td>%s</td>' \
                % (id,linenum,text)
 
     def _make_prefix(self):
